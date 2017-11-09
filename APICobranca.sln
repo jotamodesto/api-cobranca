@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca", "APICobranca\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca.Tests", "APICobranca.Tests\APICobranca.Tests.csproj", "{E01B4158-FE51-40B8-88A4-28FE5677B0DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca.DB", "APICobranca.DB\APICobranca.DB.csproj", "{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E01B4158-FE51-40B8-88A4-28FE5677B0DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E01B4158-FE51-40B8-88A4-28FE5677B0DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E01B4158-FE51-40B8-88A4-28FE5677B0DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
