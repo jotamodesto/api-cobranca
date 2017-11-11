@@ -1,4 +1,5 @@
-﻿using APICobranca.Models;
+﻿using APICobranca.DTOs;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,20 +25,22 @@ namespace APICobranca.Controllers
             return db.Debits;
         }
 
-        // GET: api/Debits/5
+        // GET: api/Debits/?card=?&initialDate=?&finalDate=?
         [HttpGet]
         [ResponseType(typeof(Debit))]
         public IEnumerable<Debit> GetDebits(string cardId = null, DateTime? initialDate = null, DateTime? finalDate = null)
         {
-            Debit debit = db.Debits.FindAsync(id);
-            if (debit == null)
+            var debits = db.Debits.Where(d => d.CardId == cardId || (d.DebitedAt >= initialDate && d.DebitedAt <= finalDate));
+            if (debits == null || debits.Count() == 0)
             {
-                return NotFound();
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return Ok(debit);
+            var debitsDTO = Mapper.Map<List<DB.Debit>, Debit[]>(debits.ToList());
+
+            return debitsDTO;
         }
-    
+
         // POST: api/Debits
         [ResponseType(typeof(Debit))]
         public async Task<IHttpActionResult> PostDebit(Debit debit)
@@ -47,12 +50,22 @@ namespace APICobranca.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Debits.Add(debit);
+            var eUser = db.Users.SingleOrDefault(d => d.CardId == debit.CardId);
+            if (eUser == null)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Requisiçâo inválida"));
+            }
+
+            var eDebit = Mapper.Map<Debit, DB.Debit>(debit);
+            eDebit.IdUser = eUser.IdUser;
+            eDebit.DebitedAt = DateTime.Now;
+
+            db.Debits.Add(eDebit);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = debit.IdDebit }, debit);
+            return CreatedAtRoute("DefaultApi", new { id = eDebit.IdDebit }, debit);
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -60,11 +73,6 @@ namespace APICobranca.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool DebitExists(int id)
-        {
-            return db.Debits.Count(e => e.IdDebit == id) > 0;
         }
     }
 }

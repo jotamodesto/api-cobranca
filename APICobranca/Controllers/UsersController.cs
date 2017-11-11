@@ -1,5 +1,5 @@
 ﻿using DB = APICobranca.DB;
-using APICobranca.Models;
+using APICobranca.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace APICobranca.Controllers
 {
@@ -44,13 +45,7 @@ namespace APICobranca.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "E-mail já existente."));
             }
 
-            DB.User eUser = new DB.User
-            {
-                Name = user.Name,
-                CardId = user.CardId,
-                Email = user.Email,
-                Password = user.Password
-            };
+            var eUser = Mapper.Map<User, DB.User>(user);
 
             db.Users.Add(eUser);
             await db.SaveChangesAsync();
