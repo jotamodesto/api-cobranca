@@ -10,6 +10,7 @@ namespace APICobranca.DB
         public DataContext()
             : base("name=DataContext")
         {
+            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         public virtual DbSet<Debit> Debits { get; set; }

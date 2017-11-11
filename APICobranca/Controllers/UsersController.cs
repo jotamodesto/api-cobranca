@@ -1,45 +1,70 @@
-﻿using APICobranca.Models;
+﻿using DB = APICobranca.DB;
+using APICobranca.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
+using System.Threading.Tasks;
 
 namespace APICobranca.Controllers
 {
     public class UsersController : ApiController
     {
-        User[] users = new User[]
-        {
-            new User{Name = "Johnatan", Email = "johnatan.modesto@gmail.com", CardId = "0000", Password = "1234"}
-        };
+        DB.DataContext db = new DB.DataContext();
 
         // GET: api/Users
-        public IEnumerable<User> Get()
+        public IEnumerable<User> GetUsers()
         {
-            return users;
-        }
+            var users = db.Users.Select(u => new User
+            {
+                Name = u.Name,
+                CardId = u.CardId,
+                Email = u.Email,
+                Password = u.Password
+            });
 
-        // GET: api/Users/5
-        public string Get(int id)
-        {
-            return "value";
+            return users.ToArray();
         }
 
         // POST: api/Users
-        public void Post([FromBody]string value)
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> PostUser(User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userExists = db.Users.SingleOrDefault(u => u.Email == user.Email) != null;
+            if (userExists)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "E-mail já existente."));
+            }
+
+            DB.User eUser = new DB.User
+            {
+                Name = user.Name,
+                CardId = user.CardId,
+                Email = user.Email,
+                Password = user.Password
+            };
+
+            db.Users.Add(eUser);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = eUser.IdUser }, user);
         }
 
-        // PUT: api/Users/5
-        public void Put(int id, [FromBody]string value)
+        protected override void Dispose(bool disposing)
         {
-        }
-
-        // DELETE: api/Users/5
-        public void Delete(int id)
-        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
