@@ -9,17 +9,11 @@ O Endpont retornará um erro se o mesmo e-mail já estivar cadastrado.
 ### Recuperar Usuários (GET api/Users)
 O Retorno será como no exemplo:
 >[
->
 >    {
->
 >        "Name": "Foo Bar",
->
 >        "Email": "foo@bar.com",
->
 >        "CardId": "1234567890123456",
->
 >        "Password": "foobar"
->
 >    },
 >    {
 >        "Name": "Foo Bar 2",
