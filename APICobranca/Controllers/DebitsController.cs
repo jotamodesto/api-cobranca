@@ -25,7 +25,7 @@ namespace APICobranca.Controllers
             return db.Debits;
         }
 
-        // GET: api/Debits/?card=?&initialDate=?&finalDate=?
+        // GET: api/Debits/?cardId=?&initialDate=?&finalDate=?
         [HttpGet]
         [ResponseType(typeof(Debit))]
         public IEnumerable<Debit> GetDebits(string cardId = null, DateTime? initialDate = null, DateTime? finalDate = null)
@@ -53,7 +53,7 @@ namespace APICobranca.Controllers
             var eUser = db.Users.SingleOrDefault(d => d.CardId == debit.CardId);
             if (eUser == null)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Requisiçâo inválida"));
+                return BadRequest("Requisiçâo inválida");
             }
 
             var eDebit = Mapper.Map<Debit, DB.Debit>(debit);
