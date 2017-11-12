@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca", "APICobranca\APICobranca.csproj", "{F0E90C2C-62A1-4EB4-B86F-533236A52B7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca.Tests", "APICobranca.Tests\APICobranca.Tests.csproj", "{E01B4158-FE51-40B8-88A4-28FE5677B0DF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APICobranca.DB", "APICobranca.DB\APICobranca.DB.csproj", "{FBB0BFB8-835C-44F6-9FBD-F01B394F2554}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0D9E7C-4C6F-4050-93C5-5C029BABC102}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
