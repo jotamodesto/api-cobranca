@@ -20,25 +20,25 @@ namespace APICobranca.Controllers
         private DB.DataContext db = new DB.DataContext();
 
         // GET: api/Debits
-        public IQueryable<DB.Debit> GetDebits()
-        {
-            return db.Debits;
-        }
+        //public IQueryable<DB.Debit> GetDebits()
+        //{
+        //    return db.Debits;
+        //}
 
         // GET: api/Debits/?cardId=?&initialDate=?&finalDate=?
         [HttpGet]
-        [ResponseType(typeof(Debit))]
-        public IEnumerable<Debit> GetDebits(string cardId = null, DateTime? initialDate = null, DateTime? finalDate = null)
+        [ResponseType(typeof(object))]
+        public IEnumerable<object> GetDebits(string cardId = null, DateTime? initialDate = null, DateTime? finalDate = null)
         {
             var debits = db.Debits.Where(d => d.CardId == cardId || (d.DebitedAt >= initialDate && d.DebitedAt <= finalDate));
             if (debits == null || debits.Count() == 0)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            var debitsDTO = Mapper.Map<List<DB.Debit>, Debit[]>(debits.ToList());
+            var response = debits.Select(d => new { id = d.CardId, debitedAt = d.DebitedAt, value = d.Value });
 
-            return debitsDTO;
+            return response;
         }
 
         // POST: api/Debits
@@ -53,7 +53,7 @@ namespace APICobranca.Controllers
             var eUser = db.Users.SingleOrDefault(d => d.CardId == debit.CardId);
             if (eUser == null)
             {
-                return BadRequest("Requisiçâo inválida");
+                return BadRequest("Requisiçâo inválida.");
             }
 
             var eDebit = Mapper.Map<Debit, DB.Debit>(debit);
@@ -63,6 +63,7 @@ namespace APICobranca.Controllers
             db.Debits.Add(eDebit);
             await db.SaveChangesAsync();
 
+            debit.DebitedAt = eDebit.DebitedAt;
             return CreatedAtRoute("DefaultApi", new { id = eDebit.IdDebit }, debit);
         }
 
