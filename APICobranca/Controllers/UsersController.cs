@@ -19,15 +19,11 @@ namespace APICobranca.Controllers
         // GET: api/Users
         public IEnumerable<User> GetUsers()
         {
-            var users = db.Users.Select(u => new User
-            {
-                Name = u.Name,
-                CardId = u.CardId,
-                Email = u.Email,
-                Password = u.Password
-            });
+            var eUsers = db.Users;
 
-            return users.ToArray();
+            var users = Mapper.Map<List<DB.User>, User[]>(eUsers.ToList());
+
+            return users;
         }
 
         // POST: api/Users
