@@ -42,6 +42,7 @@ namespace APICobranca.Controllers
         }
 
         // POST: api/Debits
+        [Authorize]
         [ResponseType(typeof(Debit))]
         public async Task<IHttpActionResult> PostDebit(Debit debit)
         {
