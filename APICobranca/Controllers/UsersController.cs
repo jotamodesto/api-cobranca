@@ -38,7 +38,7 @@ namespace APICobranca.Controllers
             var userExists = db.Users.SingleOrDefault(u => u.Email == user.Email) != null;
             if (userExists)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "E-mail já existente."));
+                return BadRequest("E-mail já existente.");
             }
 
             var eUser = Mapper.Map<User, DB.User>(user);

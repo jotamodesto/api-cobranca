@@ -43,14 +43,28 @@ namespace APICobranca.Controllers.Tests
             Assert.AreEqual(dtoUser.Email, result.Content.Email);
         }
 
+        [TestMethod()]
+        public async Task PostUserBadRequestTest()
+        {
+            Mappers.MapperConfig.RegisterMappings();
+
+            UsersController usersController = new UsersController();
+
+            var dtoUser = CreateDTO();
+
+            var result = await usersController.PostUser(dtoUser) as BadRequestErrorMessageResult;
+
+            Assert.AreEqual("E-mail já existente.", result.Message);
+        }
+
         private DTOs.User CreateDTO()
         {
             DTOs.User dtoUser = new DTOs.User
             {
-                Name = "Foo Bar 4",
-                CardId = "1234567890123459",
-                Email = "foo4@bar.com",
-                Password = "foobar4"
+                Name = "Foo Bar 3",
+                CardId = "1234567890123458",
+                Email = "foo3@bar.com",
+                Password = "foobar3"
             };
 
             return dtoUser;
